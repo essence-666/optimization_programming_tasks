@@ -1,6 +1,7 @@
 import numpy as np
 from numpy import diag, dot, eye, transpose, subtract, absolute, add, ones
 from numpy.linalg import inv, norm
+from simplex import solve_llp as simplex_from_previous_assignment
 
 def compute_p(n : int, A_telda):
     #identity matrix
@@ -44,7 +45,7 @@ def Interior(C : list, A : list[list], b : list, x_0 : list,
             break
 
         x = X_star
-        print("in the iteration", count, "vector is:\n ", x, "\n")
+        # print("in the iteration", count, "vector is:\n ", x, "\n")
         count += 1
 
         if count > 300:
@@ -57,7 +58,7 @@ def Interior(C : list, A : list[list], b : list, x_0 : list,
     for i in range(len(C)):
         res += C[i] * x[i]
     
-    print("answer:", res if result == "max" else -1 * res)
+    print("alpha = ", alpha, "answer:", res if result == "max" else -1 * res)
         
     
 def main():
@@ -85,16 +86,33 @@ def main():
     #     9
     # ]
     # x_0 = [ 1/2, 7/2, 1, 2]
-    # Interior(C=C, A=A, b=b, x_0=x_0)
+    # Interior(C=C, A=A, b=b, x_0=x_0, alpha=0.5)
+    # Interior(C=C, A=A, b=b, x_0=x_0, alpha=0.9)
+    # print("simplex from previous assignment result: ")
+    # simplex_from_previous_assignment(C, A, b)
+    #
     # OUTPUT
+    #  the last iteration vector:
+    # [
+    #   5.99999375e+00
+    #   1.00000267e+00 
+    #   1.78547810e-06
+    #   1.78547810e-06
+    # ]
+    # alpha =  0.5 answer: 6.9999964238601855
+    #
     # the last iteration vector:
     #  [
-    #   5.99995001e+00
-    #   1.00002143e+00
-    #   1.42838248e-05
-    #   1.42838248e-05
+    #   5.99999779e+00
+    #   1.00000086e+00
+    #   9.58553224e-07
+    #   3.77264613e-07
     #  ]
-    #  answer: 6.999971433492358
+    # alpha =  0.9 answer: 6.999998653833897
+    #
+    # simplex from previous assignment result: 
+    # METHOD IS NOT APPLICABLE DUE TO >= IN CONSTRAINS !!
+
 
 
     # Test 2 
@@ -117,16 +135,31 @@ def main():
     #     9
     # ]
     # x_0 = [ 1/2, 7/2, 1, 2 ]
-    # Interior(C=C, A=A, b=b, x_0=x_0, result = "min")
-    # OUTPUT
+    # Interior(C=C, A=A, b=b, x_0=x_0, alpha=0.5, result="min")
+    # Interior(C=C, A=A, b=b, x_0=x_0, alpha=0.9, result="min")
+    # print("simplex from previous assignment result: ")
+    # simplex_from_previous_assignment(C, A, b, res="min")
+    # Output
     # the last iteration vector:
     #  [
-    #   1.70625437e-06 
-    #   3.00000057e+00 
-    #   3.99999431e+00 
+    #   1.70625437e-06
+    #   3.00000057e+00
+    #   3.99999431e+00
     #   3.41250874e-06
     #  ]
-    # answer: 3.0000022764013425
+    # alpha =  0.5 answer: 3.0000022764013425
+    #
+    # the last iteration vector:
+    #  [
+    #   5.87024599e-07
+    #   3.00000080e+00
+    #   3.99999563e+00
+    #   2.98268467e-06
+    #  ]
+    # alpha =  0.9 answer: 3.000001384187187
+    #
+    # simplex from previous assignment result: 
+    # METHOD IS NOT APPLICABLE DUE TO >= IN CONSTRAINS!!
 
 
     # Test 3
@@ -152,26 +185,41 @@ def main():
     #     180
     # ]
     # x_0 = [1, 1, 1, 315, 174, 169]
-    # Interior(C=C, A=A, b=b, x_0=x_0)
+    # Interior(C=C, A=A, b=b, x_0=x_0, alpha=0.5)
+    # # Interior(C=C, A=A, b=b, x_0=x_0, alpha=0.9)
+    # print("simplex from previous assignment result: ")
+    # simplex_from_previous_assignment(C, A, b) 
     # OUTPUT
     #  the last iteration vector:
     #  [
-    #   2.96713352e-06 
-    #   7.99999110e+00 
-    #   2.00000009e+01 
-    #   6.67605042e-05
-    #   8.90140056e-06 
-    #   9.60000086e+01
+    #   3.70891690e-07
+    #   7.99999910e+00
+    #   2.00000003e+01
+    #   8.34506302e-06
+    #   1.11267507e-06
+    #   9.60000013e+01
     #  ]
-    # answer: 399.9999522676773
+    # alpha =  0.5 answer: 399.9999983350454
+    #
+    # alpha = 0.9 answer: numpy.linalg.LinAlgError: Singular matrix exception
+    #
+    # simplex from previous assignment result: 
+    # max z = 9*x1 + 10*x2 + 16*x3 + 0*x4 + 0*x5 + 0*x6 
+    # subject to the constraints:
+    # 18*x1 + 15*x2 + 12*x3 + 1*x4 + 0*x5 + 0*x6 <= 360
+    # 6*x1 + 4*x2 + 8*x3 + 0*x4 + 1*x5 + 0*x6 <= 192
+    # 5*x1 + 3*x2 + 3*x3 + 0*x4 + 0*x5 + 1*x6 <= 180
+    # 400.0
+    # [0, 8.0, 20.0, 0, 0, 0]
 
 
-    # 4 not complited yet
+    # 4 Problem
     # max z = 10*x1 + 20*x2
     # subject to the constraints:
     # -1*x1 + 2*x2 <= 15
     # 1*x1 + 1*x2 <= 12
     # 5*x1 + 3*x2 <= 45
+    # CODE
     # C = [10, 20, 0, 0, 0]
     # A = [
     #         [-1, 2, 1, 0, 0],
@@ -179,8 +227,100 @@ def main():
     #         [5, 3, 0, 0, 1]
     #     ]
     # b = [15, 12, 45]
-    # x_0 = [1, 1, 0, 0, 0]
-    # Interior(A=A, C=C, b=b, x_0=x_0)
+    # x_0 = [1, 1, 14, 10, 37]
+    # Interior(C=C, A=A, b=b, x_0=x_0, alpha=0.5)
+    # Interior(C=C, A=A, b=b, x_0=x_0, alpha=0.9)
+    # print("simplex from previous assignment result: ")
+    # simplex_from_previous_assignment(C, A, b) 
+    #
+    # OUTPUT
+    #  the last iteration vector:
+    #  [
+    #   3.00000076e+00
+    #   8.99999788e+00
+    #   4.76837158e-06
+    #   1.19209290e-06
+    #   3.00000199e+00
+    #  ]
+    # alpha =  0.5 answer: 209.9999652452779
+    #
+    # the last iteration vector:
+    #  [
+    #   2.99999977e+00
+    #   8.99999868e+00
+    #   4.27428187e-07
+    #   2.71566561e-07
+    #   3.00000089e+00
+    #  ]
+    # alpha =  0.9 answer: 209.9999713325084
+    #
+    # simplex from previous assignment result: 
+    # max z = 10*x1 + 20*x2 + 0*x3 + 0*x4 + 0*x5 
+    # subject to the constraints:
+    # -1*x1 + 2*x2 + 1*x3 + 0*x4 + 0*x5 <= 15
+    # 1*x1 + 1*x2 + 0*x3 + 1*x4 + 0*x5 <= 12
+    # 5*x1 + 3*x2 + 0*x3 + 0*x4 + 1*x5 <= 45
+    # 210.0
+    # [3.0, 9.0, 0, 0, 0]
+
+
+    # 5 Problem
+    # max z = 7*x1 + 5*x2 + 3*x3
+    # subject to the constraints:
+    # 2*x1 + 3*x2 + 1*x3 <= 15
+    # 4*x1 + 1*x2 + 2*x3 <= 25
+    # 3*x1 + 2*x2 + 4*x3 <= 30
+    # Code
+    # C = [7, 5, 3, 0, 0, 0]
+    # A = [
+    #       [2, 3, 1, 1, 0, 0], 
+    #       [4, 1, 2, 0, 1, 0],
+    #       [3, 2, 4, 0, 0, 1]
+    #     ]
+    # b = [
+    #       15, 
+    #       25, 
+    #       30
+    #     ]
+    # x_0 = [1, 1, 1, 9, 19, 21]
+    # Interior(C=C, A=A, b=b, x_0=x_0, alpha=0.5)
+    # Interior(C=C, A=A, b=b, x_0=x_0, alpha=0.9)
+    # print("simplex from previous assignment result: ")
+    # simplex_from_previous_assignment(C, A, b) 
+    #
+    # Output
+    #  the last iteration vector:
+    #  [
+    #   6.29999819e+00
+    #   7.99999816e-01
+    #   2.56229555e-06
+    #   9.85498289e-07
+    #   1.16467980e-06
+    #   9.49999462e+00
+    #  ]
+    # alpha =  0.5 answer: 48.09999409751068
+    #
+    # the last iteration vector:
+    #  [
+    #   6.30000015e+00
+    #   7.99999920e-01
+    #   8.61225235e-07
+    #   2.08653501e-07
+    #   1.60843782e-07 
+    #   9.49999798e+00
+    # ]
+    # alpha =  0.9 answer: 48.100003217663385
+    #
+    # simplex from previous assignment result: 
+    # max z = 7*x1 + 5*x2 + 3*x3 + 0*x4 + 0*x5 + 0*x6 
+    # subject to the constraints:
+    # 2*x1 + 3*x2 + 1*x3 + 1*x4 + 0*x5 + 0*x6 <= 15
+    # 4*x1 + 1*x2 + 2*x3 + 0*x4 + 1*x5 + 0*x6 <= 25
+    # 3*x1 + 2*x2 + 4*x3 + 0*x4 + 0*x5 + 1*x6 <= 30
+    # 47.0
+    # [6.0, 1.0, 0, 0, 0, 0]
+
+   
 
 
 if __name__ == "__main__":
