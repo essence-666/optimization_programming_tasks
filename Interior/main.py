@@ -32,8 +32,11 @@ def Interior(C : list, A : list[list], b : list, x_0 : list,
         A_telda = dot(A, D)
         C_telda = dot(D, C)
         
-        P = compute_p(n=len(C), A_telda=A_telda)
-
+        try:
+            P = compute_p(n=len(C), A_telda=A_telda)
+        except:
+            print(f"alpha = {alpha} the method is not applicable!")
+            return
         C_p = dot(P, C_telda)
         v =  absolute(np.min(C_p))
         X_telda = add(ones(len(C), float), alpha/v * C_p)
@@ -48,7 +51,7 @@ def Interior(C : list, A : list[list], b : list, x_0 : list,
         # print("in the iteration", count, "vector is:\n ", x, "\n")
         count += 1
 
-        if count > 300:
+        if count > 500:
             print("the problem is unsolvable or try another initiail solution!")
             return 
     
@@ -173,22 +176,22 @@ def main():
     # x2 ≥ 0, (5)
     # x3 ≥ 0. (6)   
     # CODE
-    # C = [9, 10, 16, 0, 0, 0]
-    # A = [
-    #         [18, 15, 12, 1, 0, 0],
-    #         [6, 4, 8, 0, 1, 0],
-    #         [5, 3, 3, 0, 0, 1]
-    #     ]
-    # b = [
-    #     360,
-    #     192,
-    #     180
-    # ]
-    # x_0 = [1, 1, 1, 315, 174, 169]
-    # Interior(C=C, A=A, b=b, x_0=x_0, alpha=0.5)
-    # # Interior(C=C, A=A, b=b, x_0=x_0, alpha=0.9)
-    # print("simplex from previous assignment result: ")
-    # simplex_from_previous_assignment(C, A, b) 
+    C = [9, 10, 16, 0, 0, 0]
+    A = [
+            [18, 15, 12, 1, 0, 0],
+            [6, 4, 8, 0, 1, 0],
+            [5, 3, 3, 0, 0, 1]
+        ]
+    b = [
+        360,
+        192,
+        180
+    ]
+    x_0 = [1, 1, 1, 315, 174, 169]
+    Interior(C=C, A=A, b=b, x_0=x_0, alpha=0.5)
+    Interior(C=C, A=A, b=b, x_0=x_0, alpha=0.9)
+    print("simplex from previous assignment result: ")
+    simplex_from_previous_assignment(C, A, b) 
     # OUTPUT
     #  the last iteration vector:
     #  [
