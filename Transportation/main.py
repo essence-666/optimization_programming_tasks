@@ -2,20 +2,14 @@ def Russel():
     Z = 0
     Scopy = S.copy()
     Dcopy = D.copy()
-    Ccopy =  [[0,0,0,0],
-              [0,0,0,0],
-              [0,0,0,0]]
+    Ccopy =  [[0 for i in range(len(Dcopy))] for j in range(len(Scopy))]
     for x in range(len(Scopy)):
         for y in range(len(Dcopy)):
             Ccopy[x][y] = C[x][y]
-    result = [[0,0,0,0],
-              [0,0,0,0],
-              [0,0,0,0]]
+    result = [[0 for i in range(len(Dcopy))] for j in range(len(Scopy))]
     maxRows = []
     maxCols = []
-    newC   = [[0,0,0,0],
-              [0,0,0,0],
-              [0,0,0,0]]
+    newC   = [[0 for i in range(len(Dcopy))] for j in range(len(Scopy))]
     while(max(Dcopy) != 0):
         maxRows = []
         maxCols = []
@@ -69,8 +63,6 @@ def Russel():
     print("Russle's approximtation method:")
     for row in result:
         print(' '.join(map(str, row)))
-
-
 def findMax(Ccopy):
     rowdiff = []
     coldiff = []
@@ -102,21 +94,15 @@ def findMax(Ccopy):
         return rowdiff
     else:
         return coldiff
-    
-
 def Vogel():
     
     Scopy = S.copy()
     Dcopy = D.copy()
-    Ccopy =  [[0,0,0,0],
-              [0,0,0,0],
-              [0,0,0,0]]
+    Ccopy =  [[0 for i in range(len(Dcopy))] for j in range(len(Scopy))]
     for x in range(len(Scopy)):
         for y in range(len(Dcopy)):
             Ccopy[x][y] = C[x][y]
-    result = [[0,0,0,0],
-              [0,0,0,0],
-              [0,0,0,0]]
+    result = [[0 for i in range(len(Dcopy))] for j in range(len(Scopy))]
     Z = 0
     while(max(Dcopy) != 0 and max(Scopy) != 0):
         if(len(findMax(Ccopy)) == len(Dcopy)):
@@ -195,20 +181,14 @@ def Vogel():
     print("Vogel's approximtation method:")
     for row in result:
         print(' '.join(map(str, row)))
-
-
 def Northwest():
     Scopy = S.copy()
     Dcopy = D.copy()
-    Ccopy =  [[0,0,0,0],
-              [0,0,0,0],
-              [0,0,0,0]]
+    Ccopy =  [[0 for i in range(len(Dcopy))] for j in range(len(Scopy))]
     for x in range(len(Scopy)):
         for y in range(len(Dcopy)):
             Ccopy[x][y] = C[x][y]
-    result = [[0,0,0,0],
-              [0,0,0,0],
-              [0,0,0,0]]
+    result = [[0 for i in range(len(Dcopy))] for j in range(len(Scopy))]
     Z = 0
     while(max(Dcopy) != 0):
         for i in range(len(Scopy)):
@@ -229,8 +209,6 @@ def Northwest():
     print("Northwest method:")
     for row in result:
         print(' '.join(map(str, row)))
-
-
 def format_matrix(matrix):
     widths = [0] * len(matrix[0])
     for row in matrix:
@@ -246,8 +224,6 @@ def format_matrix(matrix):
         formatted_rows.append(formatted_row)
     
     return formatted_rows
-
-
 S_input = input()
 S = list(map(int, S_input.split()))
 C = []
@@ -256,23 +232,33 @@ for _ in range(3):
     C.append(row)
 D_input = input()
 D = list(map(int, D_input.split()))
-
-print("Input table:")
 table = [[" ","D1","D2","D3","D4","Supply"],
          ["Source 1:",0,0,0,0,0],
          ["Source 2:",0,0,0,0,0],
          ["Source 3:",0,0,0,0,0],
          ["Demands:",0,0,0,0," "]]
-for x in range(len(S)):
-    for y in range(len(D)):
-        table[x+1][y+1] = C[x][y]
-        table[x+1][y+2] =S[x]
-        table[x+2][y+1] = D[y]
-formatted_table = format_matrix(table)
-
-for row in formatted_table:
-    print(' | '.join(row)) 
- 
+applicable = True
+for x in range(len((C))):
+    if(len(C[x]) != len(D)):
+        applicable = False
+if(len(C) != len(S)):
+    applicable = False
+if(applicable == False):
+    print("The method is not applicable!")
+    exit(0)
+if(sum(S) != sum(D)):
+    print("The problem is not balanced!")
+    exit(0)
+if(sum(S) == sum(D) and applicable):
+    print("Input table:")
+# for x in range(len(S)):
+#     for y in range(len(D)):
+#         table[x+1][y+1] = C[x][y]
+#         table[x+1][y+2] =S[x]
+#         table[x+2][y+1] = D[y]
+# formatted_table = format_matrix(table)
+# for row in formatted_table:
+#     print(' | '.join(row))
 Russel()
 Northwest()
 Vogel()
@@ -283,13 +269,13 @@ Vogel()
 # 7 5 2 3
 # 2 5 4 5]
 # Demand vector = (60,40,20,15)
-# Input:
+#Input:
 # 50 60 25
 # 3 2 7 6
 # 7 5 2 3
 # 2 5 4 5
 # 60 40 20 15
-# Output:
+#Output:
 # Input table:
 #           | D1 | D2 | D3 | D4 | Supply
 # Source 1: | 3  | 2  | 7  | 6  | 50
