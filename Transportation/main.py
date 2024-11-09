@@ -252,14 +252,14 @@ if(sum(S) != sum(D)):
     exit(0)
 if(sum(S) == sum(D) and applicable):
     print("Input table:")
-# for x in range(len(S)):
-#     for y in range(len(D)):
-#         table[x+1][y+1] = C[x][y]
-#         table[x+1][y+2] =S[x]
-#         table[x+2][y+1] = D[y]
-# formatted_table = format_matrix(table)
-# for row in formatted_table:
-#     print(' | '.join(row))
+for x in range(len(S)):
+    for y in range(len(D)):
+        table[x+1][y+1] = C[x][y]
+        table[x+1][y+2] =S[x]
+        table[x+2][y+1] = D[y]
+formatted_table = format_matrix(table)
+for row in formatted_table:
+    print(' | '.join(row))
 Vogel()
 Russel()
 Northwest()
