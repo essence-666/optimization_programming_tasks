@@ -91,11 +91,10 @@ def findMax(Ccopy):
         if(coldiff[x] == float("INF")):
             coldiff[x] = -1
     if(max(rowdiff) > max(coldiff)):
-        return rowdiff
+        return [rowdiff,1]
     else:
-        return coldiff
+        return [coldiff,2]
 def Vogel():
-    
     Scopy = S.copy()
     Dcopy = D.copy()
     Ccopy =  [[0 for i in range(len(Dcopy))] for j in range(len(Scopy))]
@@ -105,20 +104,22 @@ def Vogel():
     result = [[0 for i in range(len(Dcopy))] for j in range(len(Scopy))]
     Z = 0
     while(max(Dcopy) != 0 and max(Scopy) != 0):
-        if(len(findMax(Ccopy)) == len(Dcopy)):
+        fin = findMax(Ccopy)
+        if(fin[1] == 1):
             a = findMax(Ccopy)
             tempI = 0
             tempJ = 0
             TempMin = float("INF")
             for i in range(len(Scopy)):
-                for aSort in range(len(a)):
-                    if(a[aSort] == float("INF")):
-                        a[aSort] = -1
-                temp = Ccopy[i][a.index(max(a))]
+                for aSort in range(len(a[0])):
+                    if(a[0][aSort] == float("INF")):
+                        a[0][aSort] = -1
+                temp = Ccopy[i][a[0].index(max(a[0]))]
+                print(temp, TempMin)
                 if(temp < TempMin):
                     TempMin = temp 
                     tempI = i
-                    tempJ = a.index(max(a))
+                    tempJ = a[0].index(max(a[0]))
             if(Scopy[tempI]>=Dcopy[tempJ]): 
                         temp = Dcopy[tempJ]
                         result[tempI][tempJ] = temp
@@ -151,10 +152,10 @@ def Vogel():
                 for aSort in range(len(a)):
                     if(a[aSort] == float("INF")):
                         a[aSort] = -1
-                temp = Ccopy[a.index(max(a))][i]
+                temp = Ccopy[a[0].index(max(a[0]))][i]
                 if(temp < TempMin):
                     TempMin = temp 
-                    tempI = a.index(max(a))
+                    tempI = a[0].index(max(a[0]))
                     tempJ = i
             if(Scopy[tempI]>=Dcopy[tempJ]): 
                         temp = Dcopy[tempJ]
@@ -259,9 +260,9 @@ if(sum(S) == sum(D) and applicable):
 # formatted_table = format_matrix(table)
 # for row in formatted_table:
 #     print(' | '.join(row))
+Vogel()
 Russel()
 Northwest()
-Vogel()
 # Test #1 
 # Supply vector = (50,60,25)
 # Matrix of coefficients of costs =
